@@ -60,26 +60,18 @@ function playAnimalSound(animalType) {
       break;
     
     case 'lion':
-      // IMPROVED: Deep powerful roar with multiple layers
-      // First layer - deep chest roar
+      // Deep powerful roar with multiple layers
       playSlide(220, 120, 0.6, 'sawtooth', 0.35);
-      // Second layer - mid-range growl
       setTimeout(() => playSlide(180, 100, 0.5, 'square', 0.25), 150);
-      // Third layer - rumbling finish
       setTimeout(() => playTone(80, 0.4, 'triangle'), 500);
-      // Attack growl at start
       setTimeout(() => playTone(300, 0.15, 'sawtooth'), 700);
       break;
     
     case 'buffalo':
-      // IMPROVED: Low grunting snort with chest rumble
-      // Deep grunt with slide
+      // Low grunting snort with chest rumble
       playSlide(150, 80, 0.5, 'square', 0.35);
-      // Snort/sniff sound
       setTimeout(() => playTone(120, 0.2, 'sawtooth'), 450);
-      // Heavy breathing
       setTimeout(() => playSlide(110, 90, 0.4, 'triangle', 0.3), 650);
-      // Final snort
       setTimeout(() => playTone(140, 0.15, 'sawtooth'), 1050);
       break;
     
@@ -91,13 +83,13 @@ function playAnimalSound(animalType) {
       break;
     
     case 'cow':
-      // IMPROVED: Gentle moo with resonance
-      // Deep first moo
-      playSlide(200, 120, 0.6, 'sine', 0.32);
-      // Second moo with slight variation
-      setTimeout(() => playSlide(210, 130, 0.65, 'sine', 0.3), 600);
-      // Harmonic resonance
-      setTimeout(() => playTone(240, 0.4, 'sine'), 350);
+      // IMPROVED: Gentle moo - simple but effective
+      // First moo - long slide down
+      playSlide(280, 150, 0.7, 'sine', 0.35);
+      // Second moo - shorter, slightly higher
+      setTimeout(() => playSlide(260, 160, 0.6, 'sine', 0.32), 750);
+      // Subtle undertone for richness
+      setTimeout(() => playTone(100, 0.5, 'sine'), 100);
       break;
   }
 }
