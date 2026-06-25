@@ -106,53 +106,76 @@ body {
 @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06) translateY(-4px); } }
 @keyframes float-idle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-/* --- Personality Animations --- */
-.react-bunny-jump { animation: bunny-jump 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important; }
+/* --- Personality Animations (ENHANCED) --- */
+
+/* BUNNY: High bouncy jump */
+.react-bunny-jump { animation: bunny-jump 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important; }
 @keyframes bunny-jump { 
   0% { transform: translateY(0) scaleY(1); } 
-  25% { transform: translateY(-60px) scaleY(1.2); } 
-  50% { transform: translateY(-80px) scaleY(0.9); } 
+  25% { transform: translateY(-100px) scaleY(1.15); } 
+  50% { transform: translateY(-120px) scaleY(0.85); } 
+  75% { transform: translateY(-40px) scaleY(1.08); }
   100% { transform: translateY(0) scaleY(1); } 
 }
 
-.react-cat-pounce { animation: cat-pounce 0.9s ease-in-out !important; }
+/* CAT: Playful pounce with spin */
+.react-cat-pounce { animation: cat-pounce 1s ease-in-out !important; }
 @keyframes cat-pounce { 
   0% { transform: scale(1) rotate(0deg); } 
-  30% { transform: scale(1.15) rotate(-8deg); } 
-  60% { transform: scale(0.8) rotate(8deg); } 
+  20% { transform: scale(1.2) rotate(-12deg) translateY(-30px); } 
+  50% { transform: scale(0.9) rotate(25deg) translateY(10px); } 
+  75% { transform: scale(1.1) rotate(-8deg); }
   100% { transform: scale(1) rotate(0deg); } 
 }
 
-.react-lion-roar { animation: lion-roar 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important; }
+/* LION: Proud roar with head shake */
+.react-lion-roar { animation: lion-roar 1.1s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important; }
 @keyframes lion-roar { 
+  0% { transform: scale(1) rotateZ(0deg); } 
+  15% { transform: scale(1.35) rotateZ(-25deg); }
+  30% { transform: scale(1.35) rotateZ(25deg); }
+  45% { transform: scale(1.35) rotateZ(-20deg); }
+  60% { transform: scale(1.3) rotateZ(15deg); }
+  75% { transform: scale(1.15) rotateZ(-8deg); }
+  100% { transform: scale(1) rotateZ(0deg); } 
+}
+
+/* BUFFALO: Charging forward motion */
+.react-buffalo-charge { animation: buffalo-charge 1s ease-in-out !important; }
+@keyframes buffalo-charge { 
+  0% { transform: translateX(0) scaleX(1) scaleY(1); } 
+  20% { transform: translateX(-60px) scaleX(0.8) scaleY(1.05); } 
+  40% { transform: translateX(-80px) scaleX(0.75) scaleY(1.1); }
+  60% { transform: translateX(80px) scaleX(1.15) scaleY(0.95); } 
+  80% { transform: translateX(40px) scaleX(1.08) scaleY(1); }
+  100% { transform: translateX(0) scaleX(1) scaleY(1); } 
+}
+
+/* SHEEP: Wool wiggle and compress */
+.react-sheep-wiggle { animation: sheep-wiggle 0.8s ease-in-out !important; }
+@keyframes sheep-wiggle { 
   0% { transform: scale(1) rotate(0deg); } 
-  30% { transform: scale(1.3) rotate(15deg); } 
-  50% { transform: scale(1.3) rotate(-15deg); } 
+  10% { transform: scale(1.25, 0.7) rotate(-8deg); }
+  20% { transform: scale(0.75, 1.3) rotate(10deg); } 
+  30% { transform: scale(1.2, 0.75) rotate(-6deg); } 
+  40% { transform: scale(0.8, 1.25) rotate(8deg); }
+  50% { transform: scale(1.15, 0.8) rotate(-4deg); } 
+  60% { transform: scale(0.85, 1.2) rotate(6deg); }
+  75% { transform: scale(1.05, 0.95) rotate(-2deg); }
   100% { transform: scale(1) rotate(0deg); } 
 }
 
-.react-buffalo-charge { animation: buffalo-charge 0.8s ease-in-out !important; }
-@keyframes buffalo-charge { 
-  0% { transform: translateX(0) scaleX(1); } 
-  40% { transform: translateX(-40px) scaleX(0.9); } 
-  70% { transform: translateX(40px) scaleX(1.1); } 
-  100% { transform: translateX(0) scaleX(1); } 
-}
-
-.react-sheep-wiggle { animation: sheep-wiggle 0.7s ease-in-out !important; }
-@keyframes sheep-wiggle { 
-  0%, 100% { transform: scale(1) rotate(0deg); } 
-  25% { transform: scale(1.2, 0.8) rotate(-5deg); } 
-  50% { transform: scale(0.8, 1.2) rotate(5deg); } 
-  75% { transform: scale(1.15, 0.85) rotate(-3deg); } 
-}
-
-.react-cow-sway { animation: cow-sway 0.9s ease-in-out !important; }
+/* COW: Smooth side-to-side sway */
+.react-cow-sway { animation: cow-sway 1s ease-in-out !important; }
 @keyframes cow-sway { 
-  0%, 100% { transform: translateX(0) rotate(0deg); } 
-  25% { transform: translateX(-20px) rotate(-8deg); } 
-  50% { transform: translateX(20px) rotate(8deg); } 
-  75% { transform: translateX(-10px) rotate(-5deg); } 
+  0% { transform: translateX(0) rotate(0deg); } 
+  15% { transform: translateX(-35px) rotate(-12deg); } 
+  30% { transform: translateX(-45px) rotate(-15deg); }
+  45% { transform: translateX(0) rotate(0deg); }
+  55% { transform: translateX(0) rotate(0deg); }
+  70% { transform: translateX(35px) rotate(12deg); } 
+  85% { transform: translateX(45px) rotate(15deg); }
+  100% { transform: translateX(0) rotate(0deg); } 
 }
 
 @keyframes burst-fade { to { transform: translateY(-100px) scale(0); opacity: 0; } }
