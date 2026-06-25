@@ -24,8 +24,6 @@ function playTone(frequency, duration, type = 'sine') {
 }
 
 function playAnimalSound(animalType) {
-  const now = audioContext.currentTime;
-  
   switch(animalType) {
     case 'bunny':
       playTone(800, 0.15);
@@ -64,7 +62,6 @@ function triggerHaptic() {
 const giftBox = document.getElementById('gift-box');
 const overlay = document.getElementById('gift-overlay');
 const mainContent = document.getElementById('main-content');
-const animalParade = document.getElementById('animal-parade');
 
 giftBox.addEventListener('click', () => {
   triggerHaptic();
@@ -74,20 +71,17 @@ giftBox.addEventListener('click', () => {
   setTimeout(() => {
     overlay.classList.add('hidden');
     mainContent.classList.remove('hidden');
-    hideAllAnimals();
+    revealAnimalsSequentially();
   }, 800);
 });
 
-// --- Hide all animals initially except first ---
-function hideAllAnimals() {
-  const animals = document.querySelectorAll('.animal');
-  animals.forEach((animal, index) => {
-    if (index === 0) {
-      animal.style.display = 'block';
-    } else {
-      animal.style.display = 'none';
-    }
-  });
+// --- Sequential animal reveal ---
+let nextAnimalIndex = 0;
+function revealAnimalsSequentially() {
+  if (nextAnimalIndex < animals.length) {
+    animals[nextAnimalIndex].style.display = 'flex';
+    nextAnimalIndex++;
+  }
 }
 
 // --- Particle Engine ---
@@ -144,12 +138,14 @@ function createConfetti(x, y, count = 12) {
     const colors = ['#ff9ebb', '#d8b4fe', '#bae6fd', '#fef3c7', '#ff7675'];
     const randomColor = colors[Math.floor(Math.random() * colors.length)];
     
+    confetti.style.position = 'fixed';
     confetti.style.left = x + 'px';
     confetti.style.top = y + 'px';
     confetti.style.width = '8px';
     confetti.style.height = '8px';
     confetti.style.background = randomColor;
     confetti.style.borderRadius = '50%';
+    confetti.style.pointerEvents = 'none';
     
     const randomX = (Math.random() - 0.5) * 200;
     const randomY = Math.random() * -200 - 100;
@@ -164,8 +160,9 @@ function createConfetti(x, y, count = 12) {
 
 // --- Interaction Logic ---
 const animals = document.querySelectorAll('.animal');
+const personalities = ['react-giggle', 'react-surprise', 'react-love', 'react-slinky', 'react-dizzy', 'react-bashful'];
 let totalClicks = 0;
-let unlockedCount = 1; // Start with 1 (first animal already showing)
+let unlockedCount = 0;
 
 // Define distinct reactions for each animal
 const animalReactions = {
@@ -177,36 +174,42 @@ const animalReactions = {
   cow: 'react-cow-sway'
 };
 
-// Setup click handlers
+// Hide all animals at start
+animals.forEach(animal => {
+  animal.style.display = 'none';
+});
+
 animals.forEach((el, index) => {
   el.addEventListener('click', (e) => {
-    // Only allow clicking if animal is visible
+    // Only respond to visible animals
     if (el.style.display === 'none') return;
     
     triggerHaptic();
     totalClicks++;
     
-    // Get animal type and play sound
+    // Get animal type
     const animalType = Array.from(el.classList).find(c => Object.keys(animalReactions).includes(c));
+    
+    // Play sound
     playAnimalSound(animalType);
     
-    // Play reaction animation
+    // Play reaction
     const reactionClass = animalReactions[animalType];
     el.classList.remove(reactionClass);
-    void el.offsetWidth; // Trigger reflow
+    void el.offsetWidth;
     el.classList.add(reactionClass);
     
-    // Create confetti
+    // Confetti burst
     const rect = el.getBoundingClientRect();
     createConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2, 15);
     
-    // Unlock next animal if not all unlocked
-    if (unlockedCount < animals.length) {
-      animals[unlockedCount].style.display = 'block';
+    // Unlock next animal on next click
+    if (unlockedCount < animals.length - 1) {
+      animals[unlockedCount + 1].style.display = 'flex';
       unlockedCount++;
     }
     
-    // Check completion (6 animals = all unlocked + 9 bonus clicks)
+    // Final surprise at 15 clicks
     if(totalClicks >= 15 && !intenseCelebration) {
       triggerFinalSurprise();
     }
@@ -222,6 +225,5 @@ function triggerFinalSurprise() {
   document.getElementById('surprise-message').classList.remove('hidden');
   document.getElementById('main-message').style.opacity = '0.3';
   
-  // Create big confetti burst
   createConfetti(window.innerWidth / 2, window.innerHeight / 2, 50);
 }
