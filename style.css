@@ -54,11 +54,11 @@ body {
 .ambient-glow { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, rgba(0,0,0,0) 70%); top: 5%; left: 10%; z-index: 0; pointer-events: none; }
 
 .celebration-card {
-  width: 90%;
-  max-width: 450px;
+  width: 95% !important;
+  max-width: 600px;
   max-height: 85vh;
   margin: 0 auto; /* This forces the card to center itself horizontally */
-  padding: 2rem;
+  padding: 20px;
   background: linear-gradient(135deg, #32193b 0%, #2b1129 100%);
   border-radius: 20px;
   text-align: center;
@@ -79,26 +79,24 @@ body {
 #surprise-message { opacity: 1; transition: opacity 1s ease; color: #fff; margin-top: 20px; }
 
 
-/* --- Responsive Animal Styles --- */
+.animal {
+  /* This forces them to be large on phones */
+  width: 35vw !important;    /* 35% of the total screen width */
+  min-width: 140px;          /* Ensures they never get smaller than 140px */
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  flex: 0 0 auto;            /* Stops them from shrinking */
+}
+
 .animal-parade {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 15px;          /* Reduced gap to save room on mobile */
-  padding: 10px;
+  gap: 20px;
   width: 100%;
-}
-
-.animal {
-  /* Use viewport width so they scale with the screen size */
-  width: 25vw;        /* Approx 1/4th of the phone screen width */
-  max-width: 120px;   /* Prevents them from getting absurdly huge on desktop */
-  height: auto;       /* Let height adjust naturally to maintain aspect ratio */
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  margin: 5px;
-  flex-shrink: 0;
+  padding: 20px 0;
 }
 
 /* Ensure the SVG itself doesn't fight the container */
