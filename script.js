@@ -1,6 +1,10 @@
 // --- Audio context setup ---
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
+// --- Background Music ---
+const bgMusic = new Audio('my-birthday-song.mp3');
+bgMusic.loop = true;
+
 // --- Sound synthesis functions ---
 function playTone(frequency, duration, type = 'sine') {
   const oscillator = audioContext.createOscillator();
@@ -24,27 +28,27 @@ function playAnimalSound(animalType) {
   
   switch(animalType) {
     case 'bunny':
-      playTone(800, 0.15); // chirp
+      playTone(800, 0.15);
       setTimeout(() => playTone(950, 0.15), 100);
       break;
     case 'cat':
-      playTone(1200, 0.2); // meow
+      playTone(1200, 0.2);
       setTimeout(() => playTone(900, 0.25), 150);
       break;
     case 'lion':
-      playTone(150, 0.5); // roar (low)
+      playTone(150, 0.5);
       setTimeout(() => playTone(200, 0.4), 200);
       break;
     case 'buffalo':
-      playTone(120, 0.6); // deep bellow
+      playTone(120, 0.6);
       setTimeout(() => playTone(140, 0.4), 300);
       break;
     case 'sheep':
-      playTone(600, 0.25); // baa
+      playTone(600, 0.25);
       setTimeout(() => playTone(520, 0.25), 200);
       break;
     case 'cow':
-      playTone(200, 0.4); // moo
+      playTone(200, 0.4);
       setTimeout(() => playTone(180, 0.5), 250);
       break;
   }
@@ -64,20 +68,25 @@ const animalParade = document.getElementById('animal-parade');
 
 giftBox.addEventListener('click', () => {
   triggerHaptic();
-  playTone(523, 0.1); // C5 note
+  playTone(523, 0.1);
+  bgMusic.play().catch(e => console.log("Audio blocked"));
   giftBox.classList.add('unwrap');
   setTimeout(() => {
     overlay.classList.add('hidden');
     mainContent.classList.remove('hidden');
-    hideAllAnimals(); // Hide all animals initially
+    hideAllAnimals();
   }, 800);
 });
 
-// --- Hide all animals initially ---
+// --- Hide all animals initially except first ---
 function hideAllAnimals() {
   const animals = document.querySelectorAll('.animal');
-  animals.forEach(animal => {
-    animal.style.display = 'none';
+  animals.forEach((animal, index) => {
+    if (index === 0) {
+      animal.style.display = 'block';
+    } else {
+      animal.style.display = 'none';
+    }
   });
 }
 
@@ -94,8 +103,10 @@ resize();
 class Particle {
   constructor() { this.reset(); }
   reset() {
-    this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
-    this.size = Math.random() * 8 + 4; this.speedY = Math.random() * 2 + 1;
+    this.x = Math.random() * canvas.width; 
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 8 + 4; 
+    this.speedY = Math.random() * 2 + 1;
     this.speedX = Math.random() * 1 - 0.5;
     this.color = ['#ff9ebb', '#d8b4fe', '#bae6fd', '#fef3c7'][Math.floor(Math.random() * 4)];
     this.opacity = Math.random() * 0.6 + 0.2;
@@ -105,7 +116,13 @@ class Particle {
     this.x += this.speedX * (intenseCelebration ? 2 : 1); 
     if (this.y > canvas.height) this.reset(); 
   }
-  draw() { ctx.globalAlpha = this.opacity; ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+  draw() { 
+    ctx.globalAlpha = this.opacity; 
+    ctx.fillStyle = this.color; 
+    ctx.beginPath(); 
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); 
+    ctx.fill(); 
+  }
 }
 
 for (let i = 0; i < 100; i++) particles.push(new Particle());
@@ -137,10 +154,8 @@ function createConfetti(x, y, count = 12) {
     const randomX = (Math.random() - 0.5) * 200;
     const randomY = Math.random() * -200 - 100;
     
-    confetti.style.setProperty('--tx', randomX + 'px');
-    confetti.style.setProperty('--ty', randomY + 'px');
-    
     confetti.style.animation = `confetti-fall ${2 + Math.random() * 2}s ease-out forwards`;
+    confetti.style.transform = `translate(${randomX}px, ${randomY}px)`;
     
     document.body.appendChild(confetti);
     setTimeout(() => confetti.remove(), 5000);
@@ -150,7 +165,7 @@ function createConfetti(x, y, count = 12) {
 // --- Interaction Logic ---
 const animals = document.querySelectorAll('.animal');
 let totalClicks = 0;
-let unlockedAnimals = 0;
+let unlockedCount = 1; // Start with 1 (first animal already showing)
 
 // Define distinct reactions for each animal
 const animalReactions = {
@@ -162,30 +177,14 @@ const animalReactions = {
   cow: 'react-cow-sway'
 };
 
-// Unlock animals one by one on click
-function unlockNextAnimal() {
-  if (unlockedAnimals < animals.length) {
-    const animalEl = animals[unlockedAnimals];
-    const animalType = Array.from(animalEl.classList).find(c => Object.keys(animalReactions).includes(c));
-    
-    animalEl.style.display = 'block';
-    animalEl.style.opacity = '1';
-    animalEl.style.pointerEvents = 'auto';
-    
-    unlockedAnimals++;
-  }
-}
-
-// Setup click handlers BEFORE unlocking first animal
-animals.forEach(el => {
+// Setup click handlers
+animals.forEach((el, index) => {
   el.addEventListener('click', (e) => {
-    if (el.style.display === 'none' || el.style.opacity === '0') return;
+    // Only allow clicking if animal is visible
+    if (el.style.display === 'none') return;
     
     triggerHaptic();
     totalClicks++;
-    
-    // Unlock next animal
-    unlockNextAnimal();
     
     // Get animal type and play sound
     const animalType = Array.from(el.classList).find(c => Object.keys(animalReactions).includes(c));
@@ -201,17 +200,18 @@ animals.forEach(el => {
     const rect = el.getBoundingClientRect();
     createConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2, 15);
     
+    // Unlock next animal if not all unlocked
+    if (unlockedCount < animals.length) {
+      animals[unlockedCount].style.display = 'block';
+      unlockedCount++;
+    }
+    
     // Check completion (6 animals = all unlocked + 9 bonus clicks)
     if(totalClicks >= 15 && !intenseCelebration) {
       triggerFinalSurprise();
     }
   });
 });
-
-// Initialize first animal as visible on page load
-setTimeout(() => {
-  unlockNextAnimal();
-}, 100);
 
 function triggerFinalSurprise() {
   intenseCelebration = true;
