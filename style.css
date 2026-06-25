@@ -2,16 +2,12 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* FIX: Ensure body takes exact screen height and centers content */
 body {
   min-height: 100vh;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: flex; justify-content: center; align-items: center;
   background: linear-gradient(135deg, #ffd9d9 0%, #e6d4f5 50%, #c4e9ff 100%);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  overflow: hidden; /* This kills the unwanted scroll */
+  font-family: 'Plus Jakarta Sans', sans-serif; 
+  overflow-x: hidden;
 }
 
 /* --- Reveal Overlay --- */
@@ -23,44 +19,46 @@ body {
 #gift-overlay.hidden { opacity: 0; pointer-events: none; }
 
 .gift-wrapper { text-align: center; color: #fff; }
-.gift-title { font-family: 'Playfair Display', serif; margin-bottom: 2rem; }
+.gift-title { font-family: 'Playfair Display', serif; margin-bottom: 2rem; color: #fff1c7; }
+.tap-hint { margin-top: 2rem; opacity: 0.7; font-style: italic; }
 
+/* --- Gift Box Styles --- */
 .gift-box {
-  width: 180px; height: 180px;
-  background: #ff7675; margin: 2rem auto;
+  width: 180px; height: 180px; background: #ff7675; margin: 2rem auto;
   position: relative; border-radius: 15px; cursor: pointer;
   transition: transform 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
   animation: wobble 3s infinite ease-in-out;
 }
+.ribbon-vertical { position: absolute; left: 50%; top: 0; width: 30px; height: 100%; background: #ffeaa7; transform: translateX(-50%); }
+.ribbon-horizontal { position: absolute; left: 0; top: 50%; width: 100%; height: 30px; background: #ffeaa7; transform: translateY(-50%); }
+.lid { position: absolute; top: -15px; left: -10px; width: 200px; height: 30px; background: #ff7675; border-radius: 5px; }
 
-/* --- Main Celebration Content --- */
-#main-content { width: 100%; display: flex; justify-content: center; align-items: center; }
+.unwrap { animation: unwrap 1s ease-out forwards; }
+
+/* --- Main Content --- */
+#main-content { display: flex; justify-content: center; align-items: center; width: 100%; }
 #main-content.hidden { display: none; }
 
 .celebration-card {
-  width: 92%;
-  max-width: 450px;
-  max-height: 90vh; /* Ensures it never overflows the screen */
-  padding: 1.5rem;
+  position: relative; z-index: 2; width: 92%; max-width: 500px;
+  padding: 2rem 1.5rem;
   background: linear-gradient(135deg, #32193b 0%, #2b1129 100%);
-  border: 2px solid rgba(255, 255, 255, 0.15);
-  border-radius: 20px;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
-  text-align: center;
-  color: #fff;
-  overflow-y: auto; /* Only scrolls if the phone is tiny */
+  border: 2px solid rgba(255, 255, 255, 0.15); 
+  border-radius: 20px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5); 
+  text-align: center; color: #fff;
 }
 
-.greeting { font-size: 1.8rem; margin-bottom: 1rem; }
+.greeting { font-family: 'Playfair Display', serif; font-size: 2.2rem; margin-bottom: 1rem; color: #fff1c7; }
 .animal-parade { 
-  display: flex; justify-content: center; flex-wrap: wrap; 
-  gap: 15px; margin-top: 20px; 
+  display: flex; justify-content: center; align-items: center; 
+  gap: 10px; margin-top: 20px; flex-wrap: wrap; 
 }
-.animal { width: 50px; height: 50px; cursor: pointer; }
+.animal { width: 60px; height: 60px; cursor: pointer; }
 
-/* --- Basic Animations --- */
-@keyframes wobble { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+/* --- Animations --- */
+@keyframes wobble { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+@keyframes unwrap { 0% { transform: scale(1); } 100% { transform: scale(5); opacity: 0; } }
 
-/* Personality Animations (Keep your original list here) */
+/* Personality Animations */
 .react-giggle { animation: giggle 0.8s ease-in-out !important; }
 @keyframes giggle { 0%, 100% { transform: scale(1) rotate(0deg); } 25% { transform: scale(1.1, 0.9) rotate(-10deg); } 50% { transform: scale(0.9, 1.1) rotate(10deg); } }
