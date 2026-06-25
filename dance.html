@@ -218,6 +218,7 @@
   </svg>
 </div>
 
+<button id="music-btn" class="ctrl-btn">🎵 Play Music</button>
 <div class="controls">
   <button class="ctrl-btn" id="btn-slow">🐢 Slow</button>
   <button class="ctrl-btn active" id="btn-normal">🎵 Normal</button>
@@ -226,6 +227,20 @@
 <p class="tap-hint">Tap an animal for a solo spin!</p>
 
 <script>
+    // --- Music Setup ---
+const danceMusic = new Audio('party.mp3');
+danceMusic.loop = true;
+
+const musicBtn = document.getElementById('music-btn');
+musicBtn.addEventListener('click', () => {
+  if (danceMusic.paused) {
+    danceMusic.play();
+    musicBtn.textContent = '🔇 Stop Music';
+  } else {
+    danceMusic.pause();
+    musicBtn.textContent = '🎵 Play Music';
+  }
+});
 // =============================================
 // DATA
 // =============================================
