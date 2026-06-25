@@ -57,6 +57,7 @@ body {
   position: relative; z-index: 2; width: 90%; max-width: 800px; padding: 4rem 2rem;
   background: linear-gradient(135deg, #32193b 0%, #2b1129 100%);
   border: 2px solid rgba(255, 255, 255, 0.15); border-radius: 28px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5); text-align: center;
+  max-height: 90vh; overflow-y: auto;
 }
 
 .greeting { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 800; letter-spacing: -1px; color: #fff1c7; margin-bottom: 1rem; line-height: 1.1; }
@@ -73,6 +74,12 @@ body {
   width: 70px; height: 70px; cursor: pointer; transition: transform 0.3s ease;
   filter: drop-shadow(0px 0px 18px rgba(255, 255, 255, 0.9));
   background: rgba(255, 255, 255, 0.15); border-radius: 50%; padding: 5px;
+  opacity: 0;
+  animation: fade-in 0.6s ease forwards;
+}
+
+@keyframes fade-in {
+  to { opacity: 1; }
 }
 
 /* --- Idle Animations --- */
@@ -83,65 +90,92 @@ body {
 .sheep { animation: float-idle 5s infinite ease-in-out; }
 .cow { animation: breathe 4s infinite ease-in-out 0.8s; }
 
-/* Update the gift-box to look bigger on mobile */
-.gift-box {
-  width: 180px; height: 180px; /* Increased from 140px */
-  background: #ff7675; margin: 2rem auto;
-  position: relative; border-radius: 15px; cursor: pointer;
-  transition: transform 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-  animation: wobble 3s infinite ease-in-out;
-}
-
-/* Ensure the card doesn't hit the edges of the phone */
-.celebration-card {
-  width: 90%;
-  max-width: 450px;
-  max-height: 90vh; /* Limits card height so it doesn't get cut off */
-  overflow-y: auto; /* Adds scroll only if the screen is tiny */
-  padding: 2rem;
-  background: linear-gradient(135deg, #32193b 0%, #2b1129 100%);
-  border-radius: 20px;
-  text-align: center;
-  color: #fff;
-  margin: auto; /* Ensures centering */
-}
-
-/* Add to your existing style.css */
-.hidden { display: none !important; }
-
-.ambient-glow {
-  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-  z-index: 1; pointer-events: none;
-  background: radial-gradient(circle, rgba(255,182,193,0) 0%, rgba(255,182,193,0) 100%);
-  transition: background 0.5s ease;
-}
-
-/* Adjust heading size for small screens */
-.greeting { font-size: 2.2rem; }
-
-/* Keep animal parade tight but comfortable */
-.animal-parade { 
-  display: flex; justify-content: center; align-items: center; 
-  gap: 10px; margin-top: 20px; height: auto; flex-wrap: wrap; 
-}
-.animal { width: 60px; height: 60px; }
-
-@keyframes hop { 0%, 100% { transform: translateY(0) scaleY(1); } 40% { transform: translateY(-30px) scaleY(1.1); } 50% { transform: translateY(0) scaleY(0.85); } }
-@keyframes bob { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(8deg); } }
-@keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06) translateY(-4px); } }
-@keyframes float-idle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-
 /* --- Personality Animations --- */
-.react-giggle { animation: giggle 0.8s ease-in-out !important; }
-@keyframes giggle { 0%, 100% { transform: scale(1) rotate(0deg); } 25% { transform: scale(1.1, 0.9) rotate(-10deg); } 50% { transform: scale(0.9, 1.1) rotate(10deg); } }
-.react-surprise { animation: surprise 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important; }
-@keyframes surprise { 0% { transform: translateY(0) scale(1); } 50% { transform: translateY(-80px) scale(1); } 100% { transform: translateY(0) scale(1); } }
-.react-love { animation: pulse-glow 1.2s ease-in-out !important; }
-@keyframes pulse-glow { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.4); } }
-.react-slinky { animation: slinky 0.9s ease-in-out !important; }
-@keyframes slinky { 0%, 100% { transform: scale(1); } 30% { transform: scale(0.7, 1.3); } 60% { transform: scale(1.3, 0.7); } }
-.react-dizzy { animation: dizzy 0.5s linear infinite !important; }
-@keyframes dizzy { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-.react-bashful { animation: bashful 0.6s ease-in-out !important; }
-@keyframes bashful { 0%, 100% { transform: translateX(0); } 33% { transform: translateX(-15px); } 66% { transform: translateX(15px); } }
+.react-bunny-jump { animation: bunny-jump 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important; }
+@keyframes bunny-jump { 
+  0% { transform: translateY(0) scaleY(1); } 
+  25% { transform: translateY(-60px) scaleY(1.2); } 
+  50% { transform: translateY(-80px) scaleY(0.9); } 
+  100% { transform: translateY(0) scaleY(1); } 
+}
+
+.react-cat-pounce { animation: cat-pounce 0.9s ease-in-out !important; }
+@keyframes cat-pounce { 
+  0% { transform: scale(1) rotate(0deg); } 
+  30% { transform: scale(1.15) rotate(-8deg); } 
+  60% { transform: scale(0.8) rotate(8deg); } 
+  100% { transform: scale(1) rotate(0deg); } 
+}
+
+.react-lion-roar { animation: lion-roar 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important; }
+@keyframes lion-roar { 
+  0% { transform: scale(1) rotate(0deg); } 
+  30% { transform: scale(1.3) rotate(15deg); } 
+  50% { transform: scale(1.3) rotate(-15deg); } 
+  100% { transform: scale(1) rotate(0deg); } 
+}
+
+.react-buffalo-charge { animation: buffalo-charge 0.8s ease-in-out !important; }
+@keyframes buffalo-charge { 
+  0% { transform: translateX(0) scaleX(1); } 
+  40% { transform: translateX(-40px) scaleX(0.9); } 
+  70% { transform: translateX(40px) scaleX(1.1); } 
+  100% { transform: translateX(0) scaleX(1); } 
+}
+
+.react-sheep-wiggle { animation: sheep-wiggle 0.7s ease-in-out !important; }
+@keyframes sheep-wiggle { 
+  0%, 100% { transform: scale(1) rotate(0deg); } 
+  25% { transform: scale(1.2, 0.8) rotate(-5deg); } 
+  50% { transform: scale(0.8, 1.2) rotate(5deg); } 
+  75% { transform: scale(1.15, 0.85) rotate(-3deg); } 
+}
+
+.react-cow-sway { animation: cow-sway 0.9s ease-in-out !important; }
+@keyframes cow-sway { 
+  0%, 100% { transform: translateX(0) rotate(0deg); } 
+  25% { transform: translateX(-20px) rotate(-8deg); } 
+  50% { transform: translateX(20px) rotate(8deg); } 
+  75% { transform: translateX(-10px) rotate(-5deg); } 
+}
+
 @keyframes burst-fade { to { transform: translateY(-100px) scale(0); opacity: 0; } }
+
+/* --- Confetti --- */
+.confetti {
+  position: fixed;
+  pointer-events: none;
+  animation: confetti-fall 3s ease-out forwards;
+}
+
+@keyframes confetti-fall {
+  to {
+    transform: translateY(100vh) rotateZ(720deg);
+    opacity: 0;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .gift-box {
+    width: 120px; 
+    height: 120px;
+  }
+  
+  .greeting { font-size: 2.2rem; }
+  
+  .celebration-card {
+    width: 95%;
+    padding: 2rem 1.5rem;
+  }
+  
+  .animal-parade { 
+    gap: 8px; 
+    height: auto;
+  }
+  
+  .animal { 
+    width: 55px; 
+    height: 55px; 
+  }
+}
