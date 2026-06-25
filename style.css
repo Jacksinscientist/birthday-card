@@ -48,7 +48,7 @@ body {
 
 /* --- Main Content --- */
 #main-content { transition: opacity 1s ease; }
-#main-content.hidden { opacity: 0; }
+#main-content.hidden { opacity: 0; pointer-events: none; }
 
 #celebration-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
 .ambient-glow { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, rgba(0,0,0,0) 70%); top: 5%; left: 10%; z-index: 0; pointer-events: none; }
@@ -74,12 +74,13 @@ body {
   width: 70px; height: 70px; cursor: pointer; transition: transform 0.3s ease;
   filter: drop-shadow(0px 0px 18px rgba(255, 255, 255, 0.9));
   background: rgba(255, 255, 255, 0.15); border-radius: 50%; padding: 5px;
-  opacity: 0;
-  animation: fade-in 0.6s ease forwards;
+  display: none;
 }
 
-@keyframes fade-in {
-  to { opacity: 1; }
+.animal.visible {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
 }
 
 /* --- Idle Animations --- */
@@ -89,6 +90,11 @@ body {
 .buffalo { animation: breathe 4s infinite ease-in-out 0.6s; }
 .sheep { animation: float-idle 5s infinite ease-in-out; }
 .cow { animation: breathe 4s infinite ease-in-out 0.8s; }
+
+@keyframes hop { 0%, 100% { transform: translateY(0) scaleY(1); } 40% { transform: translateY(-30px) scaleY(1.1); } 50% { transform: translateY(0) scaleY(0.85); } }
+@keyframes bob { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(8deg); } }
+@keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06) translateY(-4px); } }
+@keyframes float-idle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
 /* --- Personality Animations --- */
 .react-bunny-jump { animation: bunny-jump 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important; }
@@ -154,6 +160,9 @@ body {
     opacity: 0;
   }
 }
+
+/* --- Hidden state --- */
+.hidden { display: none !important; }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
