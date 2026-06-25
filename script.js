@@ -18,14 +18,19 @@ function resize() { canvas.width = window.innerWidth; canvas.height = window.inn
 window.addEventListener('resize', resize);
 resize();
 
-// --- Event Logic ---
+// --- Updated Gift Unwrapping Logic ---
 giftBox.addEventListener('click', () => {
   bgMusic.play().catch(e => console.log("Audio blocked"));
   vibrate();
   giftBox.classList.add('unwrap');
+  
   setTimeout(() => {
     overlay.classList.add('hidden');
     mainContent.classList.remove('hidden');
+    
+    // ADD THIS LOOP TO SHOW ALL ANIMALS IMMEDIATELY
+    animals.forEach(animal => animal.classList.remove('hidden'));
+    
   }, 800);
 });
 
