@@ -334,3 +334,23 @@ body {
   .animal-parade { gap: 15px; height: auto; }
   .animal { width: 90px; height: 90px; }
 }
+
+/* ---Dance Button Style --- */
+.dance-link-button {
+  display: block; /* Makes it a button-like block */
+  width: fit-content;
+  margin: 15px auto; /* Centers it horizontally */
+  padding: 10px 20px;
+  background-color: #ff9ebb;
+  color: white;
+  text-decoration: none;
+  border-radius: 20px;
+  font-weight: 600;
+  transition: transform 0.2s, background-color 0.2s;
+  text-align: center;
+}
+
+.dance-link-button:hover {
+  transform: scale(1.05);
+  background-color: #d8b4fe;
+}
