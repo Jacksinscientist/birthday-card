@@ -23,31 +23,49 @@ function playTone(frequency, duration, type = 'sine') {
   oscillator.stop(audioContext.currentTime + duration);
 }
 
+// --- ENHANCED CUTE ANIMAL SOUNDS ---
 function playAnimalSound(animalType) {
   switch(animalType) {
     case 'bunny':
-      playTone(800, 0.15);
-      setTimeout(() => playTone(950, 0.15), 100);
+      // Cute high-pitched squeak
+      playTone(1400, 0.12);
+      setTimeout(() => playTone(1200, 0.1), 80);
+      setTimeout(() => playTone(1600, 0.15), 140);
       break;
+    
     case 'cat':
-      playTone(1200, 0.2);
-      setTimeout(() => playTone(900, 0.25), 150);
+      // Playful meow with chirp
+      playTone(1100, 0.25);
+      setTimeout(() => playTone(900, 0.2), 200);
+      setTimeout(() => playTone(1300, 0.12), 350);
       break;
+    
     case 'lion':
-      playTone(150, 0.5);
-      setTimeout(() => playTone(200, 0.4), 200);
+      // Deep powerful roar
+      playTone(180, 0.3);
+      setTimeout(() => playTone(220, 0.35), 250);
+      setTimeout(() => playTone(150, 0.4), 550);
       break;
+    
     case 'buffalo':
-      playTone(120, 0.6);
-      setTimeout(() => playTone(140, 0.4), 300);
+      // Low grunting snort
+      playTone(140, 0.4);
+      setTimeout(() => playTone(110, 0.35), 350);
+      setTimeout(() => playTone(160, 0.3), 650);
       break;
+    
     case 'sheep':
-      playTone(600, 0.25);
-      setTimeout(() => playTone(520, 0.25), 200);
+      // Cute baa sound with harmonic
+      playTone(700, 0.3);
+      setTimeout(() => playTone(550, 0.25), 280);
+      setTimeout(() => playTone(850, 0.2), 500);
       break;
+    
     case 'cow':
-      playTone(200, 0.4);
-      setTimeout(() => playTone(180, 0.5), 250);
+      // Gentle moo with two-part call
+      playTone(250, 0.4);
+      setTimeout(() => playTone(200, 0.45), 400);
+      setTimeout(() => playTone(220, 0.3), 800);
       break;
   }
 }
