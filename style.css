@@ -4,10 +4,13 @@
 
 body {
   min-height: 100vh;
-  display: flex; justify-content: center; align-items: center;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: linear-gradient(135deg, #ffd9d9 0%, #e6d4f5 50%, #c4e9ff 100%);
   font-family: 'Plus Jakarta Sans', sans-serif; 
-  overflow-x: hidden;
+  overflow: hidden; /* Fixes unwanted scroll */
 }
 
 /* --- Reveal Overlay --- */
@@ -20,13 +23,12 @@ body {
 
 .gift-wrapper { text-align: center; color: #fff; }
 .gift-title { font-family: 'Playfair Display', serif; margin-bottom: 2rem; color: #fff1c7; }
-.tap-hint { margin-top: 2rem; opacity: 0.7; font-style: italic; }
 
 /* --- Gift Box Styles --- */
 .gift-box {
   width: 180px; height: 180px; background: #ff7675; margin: 2rem auto;
   position: relative; border-radius: 15px; cursor: pointer;
-  transition: transform 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
   animation: wobble 3s infinite ease-in-out;
 }
 .ribbon-vertical { position: absolute; left: 50%; top: 0; width: 30px; height: 100%; background: #ffeaa7; transform: translateX(-50%); }
@@ -36,11 +38,11 @@ body {
 .unwrap { animation: unwrap 1s ease-out forwards; }
 
 /* --- Main Content --- */
-#main-content { display: flex; justify-content: center; align-items: center; width: 100%; }
+#main-content { display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; }
 #main-content.hidden { display: none; }
 
 .celebration-card {
-  position: relative; z-index: 2; width: 92%; max-width: 500px;
+  width: 92%; max-width: 450px;
   padding: 2rem 1.5rem;
   background: linear-gradient(135deg, #32193b 0%, #2b1129 100%);
   border: 2px solid rgba(255, 255, 255, 0.15); 
@@ -48,17 +50,11 @@ body {
   text-align: center; color: #fff;
 }
 
-.greeting { font-family: 'Playfair Display', serif; font-size: 2.2rem; margin-bottom: 1rem; color: #fff1c7; }
-.animal-parade { 
-  display: flex; justify-content: center; align-items: center; 
-  gap: 10px; margin-top: 20px; flex-wrap: wrap; 
-}
-.animal { width: 60px; height: 60px; cursor: pointer; }
+.greeting { font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 1rem; color: #fff1c7; }
+.animal-parade { display: flex; justify-content: center; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+.animal { width: 50px; height: 50px; cursor: pointer; }
 
-/* --- Animations --- */
 @keyframes wobble { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
 @keyframes unwrap { 0% { transform: scale(1); } 100% { transform: scale(5); opacity: 0; } }
-
-/* Personality Animations */
-.react-giggle { animation: giggle 0.8s ease-in-out !important; }
 @keyframes giggle { 0%, 100% { transform: scale(1) rotate(0deg); } 25% { transform: scale(1.1, 0.9) rotate(-10deg); } 50% { transform: scale(0.9, 1.1) rotate(10deg); } }
+.react-giggle { animation: giggle 0.8s ease-in-out !important; }
