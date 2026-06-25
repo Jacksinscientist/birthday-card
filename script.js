@@ -50,18 +50,21 @@ animate();
 
 
 
-// --- Interaction Logic ---
+// --- Merged Logic ---
 const giftBox = document.getElementById('gift-box');
 const overlay = document.getElementById('gift-overlay');
 const mainContent = document.getElementById('main-content');
 const glow = document.querySelector('.ambient-glow');
 const animals = document.querySelectorAll('.animal');
-let totalClicks = 0;
+const bgMusic = new Audio('my-birthday-song.mp3');
+bgMusic.loop = true;
 
-// Haptic feedback helper
+let totalClicks = 0;
 const vibrate = () => { if (navigator.vibrate) navigator.vibrate(50); };
 
+// Gift Unwrapping
 giftBox.addEventListener('click', () => {
+  bgMusic.play().catch(e => console.log("Audio blocked"));
   vibrate();
   giftBox.classList.add('unwrap');
   setTimeout(() => {
@@ -70,21 +73,19 @@ giftBox.addEventListener('click', () => {
   }, 800);
 });
 
+// Animal Interactions
 animals.forEach((el, index) => {
   el.addEventListener('click', (e) => {
     vibrate();
     totalClicks++;
 
-    // Sequential Unlocking: Show next animal every 2 clicks
     if (totalClicks % 2 === 0 && index < animals.length) {
       animals[index].classList.remove('hidden');
     }
 
-    // Glow Intensity: Brighter with more clicks
     const intensity = Math.min(totalClicks * 5, 60); 
     glow.style.background = `radial-gradient(circle, rgba(255,182,193,0.${intensity}) 0%, rgba(255,182,193,0) 70%)`;
 
-    // Existing animation logic
     el.classList.add('react-giggle');
     setTimeout(() => el.classList.remove('react-giggle'), 800);
   });
