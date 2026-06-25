@@ -2,7 +2,7 @@
 const giftBox = document.getElementById('gift-box');
 const overlay = document.getElementById('gift-overlay');
 const mainContent = document.getElementById('main-content');
-const bgMusic = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+const bgMusic = new Audio('my-birthday-song.mp3');
 bgMusic.loop = true;
 
 giftBox.addEventListener('click', () => {
