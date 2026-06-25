@@ -23,6 +23,25 @@ function playTone(frequency, duration, type = 'sine') {
   oscillator.stop(audioContext.currentTime + duration);
 }
 
+// Enhanced tone with frequency slide for more natural sound
+function playSlide(startFreq, endFreq, duration, type = 'sine', startGain = 0.3) {
+  const oscillator = audioContext.createOscillator();
+  const gainNode = audioContext.createGain();
+  
+  oscillator.connect(gainNode);
+  gainNode.connect(audioContext.destination);
+  
+  oscillator.type = type;
+  oscillator.frequency.setValueAtTime(startFreq, audioContext.currentTime);
+  oscillator.frequency.exponentialRampToValueAtTime(endFreq, audioContext.currentTime + duration);
+  
+  gainNode.gain.setValueAtTime(startGain, audioContext.currentTime);
+  gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+  
+  oscillator.start(audioContext.currentTime);
+  oscillator.stop(audioContext.currentTime + duration);
+}
+
 // --- ENHANCED CUTE ANIMAL SOUNDS ---
 function playAnimalSound(animalType) {
   switch(animalType) {
@@ -41,17 +60,27 @@ function playAnimalSound(animalType) {
       break;
     
     case 'lion':
-      // Deep powerful roar
-      playTone(180, 0.3);
-      setTimeout(() => playTone(220, 0.35), 250);
-      setTimeout(() => playTone(150, 0.4), 550);
+      // IMPROVED: Deep powerful roar with multiple layers
+      // First layer - deep chest roar
+      playSlide(220, 120, 0.6, 'sawtooth', 0.35);
+      // Second layer - mid-range growl
+      setTimeout(() => playSlide(180, 100, 0.5, 'square', 0.25), 150);
+      // Third layer - rumbling finish
+      setTimeout(() => playTone(80, 0.4, 'triangle'), 500);
+      // Attack growl at start
+      setTimeout(() => playTone(300, 0.15, 'sawtooth'), 700);
       break;
     
     case 'buffalo':
-      // Low grunting snort
-      playTone(140, 0.4);
-      setTimeout(() => playTone(110, 0.35), 350);
-      setTimeout(() => playTone(160, 0.3), 650);
+      // IMPROVED: Low grunting snort with chest rumble
+      // Deep grunt with slide
+      playSlide(150, 80, 0.5, 'square', 0.35);
+      // Snort/sniff sound
+      setTimeout(() => playTone(120, 0.2, 'sawtooth'), 450);
+      // Heavy breathing
+      setTimeout(() => playSlide(110, 90, 0.4, 'triangle', 0.3), 650);
+      // Final snort
+      setTimeout(() => playTone(140, 0.15, 'sawtooth'), 1050);
       break;
     
     case 'sheep':
@@ -62,10 +91,13 @@ function playAnimalSound(animalType) {
       break;
     
     case 'cow':
-      // Gentle moo with two-part call
-      playTone(250, 0.4);
-      setTimeout(() => playTone(200, 0.45), 400);
-      setTimeout(() => playTone(220, 0.3), 800);
+      // IMPROVED: Gentle moo with resonance
+      // Deep first moo
+      playSlide(200, 120, 0.6, 'sine', 0.32);
+      // Second moo with slight variation
+      setTimeout(() => playSlide(210, 130, 0.65, 'sine', 0.3), 600);
+      // Harmonic resonance
+      setTimeout(() => playTone(240, 0.4, 'sine'), 350);
       break;
   }
 }
