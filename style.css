@@ -2,7 +2,6 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* Center everything and prevent page scrolling */
 body {
   margin: 0;
   min-height: 100vh;
@@ -11,50 +10,140 @@ body {
   align-items: center;
   background: linear-gradient(135deg, #ffd9d9 0%, #e6d4f5 50%, #c4e9ff 100%);
   font-family: 'Plus Jakarta Sans', sans-serif;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 /* --- Reveal Overlay --- */
 #gift-overlay {
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-  background: #2b1129; z-index: 10; display: flex; justify-content: center; align-items: center;
-  transition: opacity 0.8s ease;
+  background: #2b1129; z-index: 10;
+  display: flex; justify-content: center; align-items: center;
 }
-#gift-overlay.hidden { opacity: 0; pointer-events: none; }
+#gift-overlay.hidden { display: none; }
 
 .gift-wrapper { text-align: center; color: #fff; }
 .gift-title { font-family: 'Playfair Display', serif; margin-bottom: 2rem; color: #fff1c7; }
 .tap-hint { margin-top: 2rem; opacity: 0.7; font-style: italic; }
 
-/* --- Gift Box Styles --- */
+/* --- Gift Box --- */
 .gift-box {
-  width: 140px; height: 140px; background: #ff7675; margin: 0 auto;
-  position: relative; border-radius: 10px; cursor: pointer;
-  transition: transform 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-  animation: wobble 3s infinite ease-in-out;
+  width: 140px; height: 140px;
+  background: #ff7675;
+  margin: 0 auto;
+  position: relative;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  animation: gift-float 3s infinite ease-in-out;
+  transform-origin: center bottom;
 }
-.gift-box:hover { transform: scale(1.05); }
-.ribbon-vertical { position: absolute; left: 50%; top: 0; width: 30px; height: 100%; background: #ffeaa7; transform: translateX(-50%); }
-.ribbon-horizontal { position: absolute; left: 0; top: 50%; width: 100%; height: 30px; background: #ffeaa7; transform: translateY(-50%); }
-.lid { position: absolute; top: -15px; left: -10px; width: 160px; height: 30px; background: #ff7675; border-radius: 5px; }
 
-.unwrap { animation: unwrap 1s ease-out forwards; }
-@keyframes wobble { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
-@keyframes unwrap { 
-  0% { transform: scale(1) translateY(0); }
-  30% { transform: scale(1.2) translateY(-20px); }
-  100% { transform: scale(5) translateY(0); opacity: 0; } 
+.gift-box:hover { filter: brightness(1.1); }
+
+.ribbon-vertical {
+  position: absolute; left: 50%; top: 0;
+  width: 30px; height: 100%;
+  background: #ffeaa7;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+.ribbon-horizontal {
+  position: absolute; left: 0; top: 50%;
+  width: 100%; height: 30px;
+  background: #ffeaa7;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+/* Bow on top */
+.ribbon-horizontal::before,
+.ribbon-horizontal::after {
+  content: '';
+  position: absolute;
+  top: -18px;
+  width: 28px; height: 28px;
+  background: #ffeaa7;
+  border-radius: 50% 50% 0 50%;
+  transform-origin: bottom right;
+}
+.ribbon-horizontal::before { left: calc(50% - 28px); transform: rotate(-45deg); }
+.ribbon-horizontal::after { left: calc(50%); border-radius: 50% 50% 50% 0; transform: rotate(45deg); }
+
+.lid {
+  position: absolute;
+  top: -18px; left: -10px;
+  width: 160px; height: 32px;
+  background: #e84040;
+  border-radius: 6px;
+  z-index: 3;
+  transform-origin: center bottom;
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.2);
+}
+
+/* --- Gift Box Animations --- */
+
+/* Idle float */
+@keyframes gift-float {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-12px) rotate(3deg); }
+}
+
+/* Step 1: Wobble on click */
+.gift-box.wobble {
+  animation: box-wobble 0.55s ease-in-out !important;
+}
+@keyframes box-wobble {
+  0%   { transform: rotate(0deg) scale(1); }
+  15%  { transform: rotate(-8deg) scale(1.05); }
+  30%  { transform: rotate(8deg) scale(1.05); }
+  45%  { transform: rotate(-6deg) scale(1.08); }
+  60%  { transform: rotate(6deg) scale(1.08); }
+  75%  { transform: rotate(-3deg) scale(1.05); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+/* Step 2a: Lid flies off */
+.lid-fly {
+  animation: lid-flip 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
+}
+@keyframes lid-flip {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+  40%  { transform: translateY(-60px) rotate(-30deg) translateX(-20px); opacity: 1; }
+  100% { transform: translateY(-160px) rotate(-60deg) translateX(-60px); opacity: 0; }
+}
+
+/* Step 2b: Box explodes outward */
+.gift-box.unwrap {
+  animation: box-explode 0.8s ease-out forwards !important;
+}
+@keyframes box-explode {
+  0%   { transform: scale(1); opacity: 1; }
+  30%  { transform: scale(1.3); opacity: 1; }
+  60%  { transform: scale(1.6); opacity: 0.6; }
+  100% { transform: scale(0.1); opacity: 0; }
 }
 
 /* --- Main Content --- */
-#main-content { transition: opacity 1s ease; }
-#main-content.hidden { opacity: 0; pointer-events: none; }
+#main-content {
+  transition: opacity 0.8s ease;
+}
+#main-content.hidden { opacity: 0; pointer-events: none; display: none; }
 
-#celebration-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
-.ambient-glow { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, rgba(0,0,0,0) 70%); top: 5%; left: 10%; z-index: 0; pointer-events: none; }
+#celebration-canvas {
+  position: fixed; top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: 1; pointer-events: none;
+}
+.ambient-glow {
+  position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, rgba(0,0,0,0) 70%);
+  top: 5%; left: 10%;
+  z-index: 0; pointer-events: none;
+}
 
 .celebration-card {
-  width: 95% !important;;
+  width: 95%;
   max-width: 600px;
   max-height: 95vh;
   margin: 0 auto;
@@ -64,29 +153,66 @@ body {
   text-align: center;
   color: #fff;
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   align-items: center;
   overflow-y: auto;
+  position: relative;
+  z-index: 2;
 }
 
-.greeting { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 800; letter-spacing: -1px; color: #fff1c7; margin-bottom: 1rem; line-height: 1.1; }
-.message-section { font-size: 1.2rem; line-height: 1.7; color: #e9d5eb; margin-bottom: 3rem; transition: opacity 0.5s; }
-.surprise-title { color: #ff7675; font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 1rem; }
-.tap-instruction { font-size: 1rem; color: #fca5a5; font-style: italic; margin-top: 1rem; }
+.greeting {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: #fff1c7;
+  margin-bottom: 1rem;
+  line-height: 1.1;
+}
+.message-section {
+  font-size: 1.2rem;
+  line-height: 1.7;
+  color: #e9d5eb;
+  margin-bottom: 3rem;
+  transition: opacity 0.5s;
+}
+.surprise-title {
+  color: #ff7675;
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+.tap-instruction {
+  font-size: 1rem;
+  color: #fca5a5;
+  font-style: italic;
+  margin-top: 1rem;
+}
 
 /* --- Surprises --- */
 #surprise-message.hidden { display: none; }
 #surprise-message { opacity: 1; transition: opacity 1s ease; color: #fff; margin-top: 20px; }
 
-/* --- Animals - BIGGER SIZES --- */
-.animal-parade { display: flex; justify-content: center; align-items: flex-end; gap: 20px; margin-top: 20px; height: auto; flex-wrap: wrap; }
-.animal { 
-  width: 100px; height: 100px; cursor: pointer; transition: transform 0.3s ease;
+/* --- Animals --- */
+.animal-parade {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 20px;
+  margin-top: 20px;
+  height: auto;
+  flex-wrap: wrap;
+}
+.animal {
+  width: 100px; height: 100px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
   filter: drop-shadow(0px 0px 18px rgba(255, 255, 255, 0.9));
-  background: rgba(255, 255, 255, 0.15); border-radius: 50%; padding: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  padding: 8px;
   display: none;
 }
-
 .animal.visible {
   display: flex !important;
   align-items: center;
@@ -94,130 +220,117 @@ body {
 }
 
 /* --- Idle Animations --- */
-.bunny { animation: hop 2.5s infinite ease-in-out; }
-.cat { animation: bob 3s infinite ease-in-out 0.4s; }
-.lion { animation: breathe 4s infinite ease-in-out 0.2s; }
+.bunny   { animation: hop 2.5s infinite ease-in-out; }
+.cat     { animation: bob 3s infinite ease-in-out 0.4s; }
+.lion    { animation: breathe 4s infinite ease-in-out 0.2s; }
 .buffalo { animation: breathe 4s infinite ease-in-out 0.6s; }
-.sheep { animation: float-idle 5s infinite ease-in-out; }
-.cow { animation: breathe 4s infinite ease-in-out 0.8s; }
+.sheep   { animation: float-idle 5s infinite ease-in-out; }
+.cow     { animation: breathe 4s infinite ease-in-out 0.8s; }
 
-@keyframes hop { 0%, 100% { transform: translateY(0) scaleY(1); } 40% { transform: translateY(-30px) scaleY(1.1); } 50% { transform: translateY(0) scaleY(0.85); } }
-@keyframes bob { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(8deg); } }
-@keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06) translateY(-4px); } }
-@keyframes float-idle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+@keyframes hop {
+  0%, 100% { transform: translateY(0) scaleY(1); }
+  40% { transform: translateY(-30px) scaleY(1.1); }
+  50% { transform: translateY(0) scaleY(0.85); }
+}
+@keyframes bob {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(8deg); }
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06) translateY(-4px); }
+}
+@keyframes float-idle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
 
-/* --- Personality Animations (ENHANCED) --- */
-
-/* BUNNY: High bouncy jump */
+/* --- Reaction Animations --- */
 .react-bunny-jump { animation: bunny-jump 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important; }
-@keyframes bunny-jump { 
-  0% { transform: translateY(0) scaleY(1); } 
-  25% { transform: translateY(-100px) scaleY(1.15); } 
-  50% { transform: translateY(-120px) scaleY(0.85); } 
-  75% { transform: translateY(-40px) scaleY(1.08); }
-  100% { transform: translateY(0) scaleY(1); } 
+@keyframes bunny-jump {
+  0%   { transform: translateY(0) scaleY(1); }
+  25%  { transform: translateY(-100px) scaleY(1.15); }
+  50%  { transform: translateY(-120px) scaleY(0.85); }
+  75%  { transform: translateY(-40px) scaleY(1.08); }
+  100% { transform: translateY(0) scaleY(1); }
 }
 
-/* CAT: Playful pounce with spin */
 .react-cat-pounce { animation: cat-pounce 1s ease-in-out !important; }
-@keyframes cat-pounce { 
-  0% { transform: scale(1) rotate(0deg); } 
-  20% { transform: scale(1.2) rotate(-12deg) translateY(-30px); } 
-  50% { transform: scale(0.9) rotate(25deg) translateY(10px); } 
-  75% { transform: scale(1.1) rotate(-8deg); }
-  100% { transform: scale(1) rotate(0deg); } 
+@keyframes cat-pounce {
+  0%   { transform: scale(1) rotate(0deg); }
+  20%  { transform: scale(1.2) rotate(-12deg) translateY(-30px); }
+  50%  { transform: scale(0.9) rotate(25deg) translateY(10px); }
+  75%  { transform: scale(1.1) rotate(-8deg); }
+  100% { transform: scale(1) rotate(0deg); }
 }
 
-/* LION: Proud roar with head shake */
 .react-lion-roar { animation: lion-roar 1.1s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important; }
-@keyframes lion-roar { 
-  0% { transform: scale(1) rotateZ(0deg); } 
-  15% { transform: scale(1.35) rotateZ(-25deg); }
-  30% { transform: scale(1.35) rotateZ(25deg); }
-  45% { transform: scale(1.35) rotateZ(-20deg); }
-  60% { transform: scale(1.3) rotateZ(15deg); }
-  75% { transform: scale(1.15) rotateZ(-8deg); }
-  100% { transform: scale(1) rotateZ(0deg); } 
+@keyframes lion-roar {
+  0%   { transform: scale(1) rotateZ(0deg); }
+  15%  { transform: scale(1.35) rotateZ(-25deg); }
+  30%  { transform: scale(1.35) rotateZ(25deg); }
+  45%  { transform: scale(1.35) rotateZ(-20deg); }
+  60%  { transform: scale(1.3) rotateZ(15deg); }
+  75%  { transform: scale(1.15) rotateZ(-8deg); }
+  100% { transform: scale(1) rotateZ(0deg); }
 }
 
-/* BUFFALO: Charging forward motion */
 .react-buffalo-charge { animation: buffalo-charge 1s ease-in-out !important; }
-@keyframes buffalo-charge { 
-  0% { transform: translateX(0) scaleX(1) scaleY(1); } 
-  20% { transform: translateX(-60px) scaleX(0.8) scaleY(1.05); } 
-  40% { transform: translateX(-80px) scaleX(0.75) scaleY(1.1); }
-  60% { transform: translateX(80px) scaleX(1.15) scaleY(0.95); } 
-  80% { transform: translateX(40px) scaleX(1.08) scaleY(1); }
-  100% { transform: translateX(0) scaleX(1) scaleY(1); } 
+@keyframes buffalo-charge {
+  0%   { transform: translateX(0) scaleX(1) scaleY(1); }
+  20%  { transform: translateX(-60px) scaleX(0.8) scaleY(1.05); }
+  40%  { transform: translateX(-80px) scaleX(0.75) scaleY(1.1); }
+  60%  { transform: translateX(80px) scaleX(1.15) scaleY(0.95); }
+  80%  { transform: translateX(40px) scaleX(1.08) scaleY(1); }
+  100% { transform: translateX(0) scaleX(1) scaleY(1); }
 }
 
-/* SHEEP: Wool wiggle and compress */
 .react-sheep-wiggle { animation: sheep-wiggle 0.8s ease-in-out !important; }
-@keyframes sheep-wiggle { 
-  0% { transform: scale(1) rotate(0deg); } 
-  10% { transform: scale(1.25, 0.7) rotate(-8deg); }
-  20% { transform: scale(0.75, 1.3) rotate(10deg); } 
-  30% { transform: scale(1.2, 0.75) rotate(-6deg); } 
-  40% { transform: scale(0.8, 1.25) rotate(8deg); }
-  50% { transform: scale(1.15, 0.8) rotate(-4deg); } 
-  60% { transform: scale(0.85, 1.2) rotate(6deg); }
-  75% { transform: scale(1.05, 0.95) rotate(-2deg); }
-  100% { transform: scale(1) rotate(0deg); } 
+@keyframes sheep-wiggle {
+  0%   { transform: scale(1) rotate(0deg); }
+  10%  { transform: scale(1.25, 0.7) rotate(-8deg); }
+  20%  { transform: scale(0.75, 1.3) rotate(10deg); }
+  30%  { transform: scale(1.2, 0.75) rotate(-6deg); }
+  40%  { transform: scale(0.8, 1.25) rotate(8deg); }
+  50%  { transform: scale(1.15, 0.8) rotate(-4deg); }
+  60%  { transform: scale(0.85, 1.2) rotate(6deg); }
+  75%  { transform: scale(1.05, 0.95) rotate(-2deg); }
+  100% { transform: scale(1) rotate(0deg); }
 }
 
-/* COW: Smooth side-to-side sway */
 .react-cow-sway { animation: cow-sway 1s ease-in-out !important; }
-@keyframes cow-sway { 
-  0% { transform: translateX(0) rotate(0deg); } 
-  15% { transform: translateX(-35px) rotate(-12deg); } 
-  30% { transform: translateX(-45px) rotate(-15deg); }
-  45% { transform: translateX(0) rotate(0deg); }
-  55% { transform: translateX(0) rotate(0deg); }
-  70% { transform: translateX(35px) rotate(12deg); } 
-  85% { transform: translateX(45px) rotate(15deg); }
-  100% { transform: translateX(0) rotate(0deg); } 
+@keyframes cow-sway {
+  0%   { transform: translateX(0) rotate(0deg); }
+  15%  { transform: translateX(-35px) rotate(-12deg); }
+  30%  { transform: translateX(-45px) rotate(-15deg); }
+  45%  { transform: translateX(0) rotate(0deg); }
+  55%  { transform: translateX(0) rotate(0deg); }
+  70%  { transform: translateX(35px) rotate(12deg); }
+  85%  { transform: translateX(45px) rotate(15deg); }
+  100% { transform: translateX(0) rotate(0deg); }
 }
-
-@keyframes burst-fade { to { transform: translateY(-100px) scale(0); opacity: 0; } }
 
 /* --- Confetti --- */
 .confetti {
   position: fixed;
   pointer-events: none;
-  animation: confetti-fall 3s ease-out forwards;
+  z-index: 999;
+  animation: confetti-fall var(--dur, 3s) ease-out forwards;
 }
-
 @keyframes confetti-fall {
-  to {
-    transform: translateY(100vh) rotateZ(720deg);
-    opacity: 0;
-  }
+  0%   { transform: translate(0, 0) rotateZ(0deg); opacity: 1; }
+  100% { transform: translate(var(--tx, 0px), var(--ty, -200px)) rotateZ(540deg); opacity: 0; }
 }
 
-/* --- Hidden state --- */
+/* --- Hidden --- */
 .hidden { display: none !important; }
 
-/* Responsive adjustments */
+/* --- Responsive --- */
 @media (max-width: 768px) {
-  .gift-box {
-    width: 120px; 
-    height: 120px;
-  }
-  
+  .gift-box { width: 120px; height: 120px; }
+  .lid { width: 140px; }
   .greeting { font-size: 2.2rem; }
-  
-  .celebration-card {
-    width: 95%;
-    padding: 2rem 1.5rem;
-  }
-  
-  .animal-parade { 
-    gap: 15px; 
-    height: auto;
-  }
-  
-  .animal { 
-    width: 90px; 
-    height: 90px; 
-  }
+  .celebration-card { width: 95%; padding: 2rem 1.5rem; }
+  .animal-parade { gap: 15px; height: auto; }
+  .animal { width: 90px; height: 90px; }
 }
