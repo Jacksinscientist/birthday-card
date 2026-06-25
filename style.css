@@ -2,11 +2,16 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+/* Center everything and prevent page scrolling */
 body {
+  margin: 0;
   min-height: 100vh;
-  display: flex; justify-content: center; align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: linear-gradient(135deg, #ffd9d9 0%, #e6d4f5 50%, #c4e9ff 100%);
-  font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  overflow: hidden; 
 }
 
 /* --- Reveal Overlay --- */
@@ -89,12 +94,16 @@ body {
 
 /* Ensure the card doesn't hit the edges of the phone */
 .celebration-card {
-  position: relative; z-index: 2; width: 95%; /* Increased from 90% */
-  max-width: 500px; padding: 2rem 1.5rem; /* Reduced padding for mobile */
+  width: 90%;
+  max-width: 450px;
+  max-height: 90vh; /* Limits card height so it doesn't get cut off */
+  overflow-y: auto; /* Adds scroll only if the screen is tiny */
+  padding: 2rem;
   background: linear-gradient(135deg, #32193b 0%, #2b1129 100%);
-  border: 2px solid rgba(255, 255, 255, 0.15); 
-  border-radius: 20px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5); 
+  border-radius: 20px;
   text-align: center;
+  color: #fff;
+  margin: auto; /* Ensures centering */
 }
 
 /* Adjust heading size for small screens */
