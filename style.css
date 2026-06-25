@@ -79,22 +79,24 @@ body {
 #surprise-message { opacity: 1; transition: opacity 1s ease; color: #fff; margin-top: 20px; }
 
 
-.animal { 
-  width: 120px;   /* Increased from original size */
-  height: 120px; 
-  cursor: pointer; 
-  transition: transform 0.3s ease; 
-  margin: 15px;    /* Adds space between the big animals */
+/* Update the .animal class */
+.animal {
+  width: 150px;       /* Increased for better visibility */
+  height: 150px;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  margin: 20px;
+  flex-shrink: 0;     /* Prevents them from shrinking */
 }
 
-/* Ensure the container allows them to wrap properly */
+/* Ensure the parade container spreads them nicely */
 .animal-parade {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 20px;
-  margin-top: 20px;
+  gap: 30px;          /* More breathing room */
+  padding: 20px;
 }
 
 .animal.visible {
