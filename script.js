@@ -83,13 +83,11 @@ function playAnimalSound(animalType) {
       break;
     
     case 'cow':
-      // IMPROVED: Gentle moo - simple but effective
-      // First moo - long slide down
-      playSlide(280, 150, 0.7, 'sine', 0.35);
-      // Second moo - shorter, slightly higher
-      setTimeout(() => playSlide(260, 160, 0.6, 'sine', 0.32), 750);
-      // Subtle undertone for richness
-      setTimeout(() => playTone(100, 0.5, 'sine'), 100);
+      // FIXED: Simple clear moo sounds
+      // First moo - loud and clear
+      playSlide(200, 100, 0.8, 'sine', 0.4);
+      // Second moo - with more energy
+      setTimeout(() => playSlide(220, 110, 0.8, 'sine', 0.4), 850);
       break;
   }
 }
