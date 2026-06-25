@@ -6,8 +6,7 @@ body {
   min-height: 100vh;
   display: flex; justify-content: center; align-items: center;
   background: linear-gradient(135deg, #ffd9d9 0%, #e6d4f5 50%, #c4e9ff 100%);
-  font-family: 'Plus Jakarta Sans', sans-serif; 
-  overflow: hidden; /* Fixes accidental scrolling */
+  font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden;
 }
 
 /* --- Reveal Overlay --- */
@@ -20,41 +19,58 @@ body {
 
 .gift-wrapper { text-align: center; color: #fff; }
 .gift-title { font-family: 'Playfair Display', serif; margin-bottom: 2rem; color: #fff1c7; }
+.tap-hint { margin-top: 2rem; opacity: 0.7; font-style: italic; }
 
+/* --- Gift Box Styles --- */
 .gift-box {
-  width: 180px; height: 180px; background: #ff7675; margin: 2rem auto;
-  position: relative; border-radius: 15px; cursor: pointer;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  width: 140px; height: 140px; background: #ff7675; margin: 0 auto;
+  position: relative; border-radius: 10px; cursor: pointer;
+  transition: transform 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
   animation: wobble 3s infinite ease-in-out;
 }
+.gift-box:hover { transform: scale(1.05); }
 .ribbon-vertical { position: absolute; left: 50%; top: 0; width: 30px; height: 100%; background: #ffeaa7; transform: translateX(-50%); }
 .ribbon-horizontal { position: absolute; left: 0; top: 50%; width: 100%; height: 30px; background: #ffeaa7; transform: translateY(-50%); }
-.lid { position: absolute; top: -15px; left: -10px; width: 200px; height: 30px; background: #ff7675; border-radius: 5px; }
+.lid { position: absolute; top: -15px; left: -10px; width: 160px; height: 30px; background: #ff7675; border-radius: 5px; }
 
 .unwrap { animation: unwrap 1s ease-out forwards; }
+@keyframes wobble { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+@keyframes unwrap { 
+  0% { transform: scale(1) translateY(0); }
+  30% { transform: scale(1.2) translateY(-20px); }
+  100% { transform: scale(5) translateY(0); opacity: 0; } 
+}
 
 /* --- Main Content --- */
-#main-content { width: 100%; display: flex; justify-content: center; align-items: center; }
-#main-content.hidden { display: none; }
+#main-content { transition: opacity 1s ease; }
+#main-content.hidden { opacity: 0; }
+
+#celebration-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
+.ambient-glow { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, rgba(0,0,0,0) 70%); top: 5%; left: 10%; z-index: 0; pointer-events: none; }
 
 .celebration-card {
-  width: 90%; max-width: 450px; padding: 2rem;
+  position: relative; z-index: 2; width: 90%; max-width: 800px; padding: 4rem 2rem;
   background: linear-gradient(135deg, #32193b 0%, #2b1129 100%);
-  border-radius: 20px; text-align: center; color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.15); border-radius: 28px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5); text-align: center;
 }
 
-.greeting { font-size: 1.8rem; margin-bottom: 1rem; color: #fff1c7; }
+.greeting { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 800; letter-spacing: -1px; color: #fff1c7; margin-bottom: 1rem; line-height: 1.1; }
+.message-section { font-size: 1.2rem; line-height: 1.7; color: #e9d5eb; margin-bottom: 3rem; transition: opacity 0.5s; }
+.surprise-title { color: #ff7675; font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 1rem; }
+.tap-instruction { font-size: 1rem; color: #fca5a5; font-style: italic; margin-top: 1rem; }
 
-.animal-parade { 
-  display: flex; justify-content: center; align-items: center; 
-  gap: 10px; margin-top: 20px; flex-wrap: wrap; 
-}
+/* --- Surprises --- */
+#surprise-message.hidden { display: none; }
+#surprise-message { opacity: 1; transition: opacity 1s ease; color: #fff; margin-top: 20px; }
+
+.animal-parade { display: flex; justify-content: center; align-items: flex-end; gap: 15px; margin-top: 10px; height: 140px; flex-wrap: wrap; }
 .animal { 
-  width: 60px; height: 60px; cursor: pointer;
-  background: rgba(255, 255, 255, 0.1); border-radius: 50%; padding: 5px;
+  width: 70px; height: 70px; cursor: pointer; transition: transform 0.3s ease;
+  filter: drop-shadow(0px 0px 18px rgba(255, 255, 255, 0.9));
+  background: rgba(255, 255, 255, 0.15); border-radius: 50%; padding: 5px;
 }
 
-/* --- Animations (Ensured active) --- */
+/* --- Idle Animations --- */
 .bunny { animation: hop 2.5s infinite ease-in-out; }
 .cat { animation: bob 3s infinite ease-in-out 0.4s; }
 .lion { animation: breathe 4s infinite ease-in-out 0.2s; }
@@ -62,9 +78,51 @@ body {
 .sheep { animation: float-idle 5s infinite ease-in-out; }
 .cow { animation: breathe 4s infinite ease-in-out 0.8s; }
 
-@keyframes wobble { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
-@keyframes unwrap { 100% { transform: scale(5); opacity: 0; } }
-@keyframes hop { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-20px); } }
-@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-@keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-@keyframes float-idle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+/* Update the gift-box to look bigger on mobile */
+.gift-box {
+  width: 180px; height: 180px; /* Increased from 140px */
+  background: #ff7675; margin: 2rem auto;
+  position: relative; border-radius: 15px; cursor: pointer;
+  transition: transform 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  animation: wobble 3s infinite ease-in-out;
+}
+
+/* Ensure the card doesn't hit the edges of the phone */
+.celebration-card {
+  position: relative; z-index: 2; width: 95%; /* Increased from 90% */
+  max-width: 500px; padding: 2rem 1.5rem; /* Reduced padding for mobile */
+  background: linear-gradient(135deg, #32193b 0%, #2b1129 100%);
+  border: 2px solid rgba(255, 255, 255, 0.15); 
+  border-radius: 20px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5); 
+  text-align: center;
+}
+
+/* Adjust heading size for small screens */
+.greeting { font-size: 2.2rem; }
+
+/* Keep animal parade tight but comfortable */
+.animal-parade { 
+  display: flex; justify-content: center; align-items: center; 
+  gap: 10px; margin-top: 20px; height: auto; flex-wrap: wrap; 
+}
+.animal { width: 60px; height: 60px; }
+
+@keyframes hop { 0%, 100% { transform: translateY(0) scaleY(1); } 40% { transform: translateY(-30px) scaleY(1.1); } 50% { transform: translateY(0) scaleY(0.85); } }
+@keyframes bob { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(8deg); } }
+@keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06) translateY(-4px); } }
+@keyframes float-idle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+/* --- Personality Animations --- */
+.react-giggle { animation: giggle 0.8s ease-in-out !important; }
+@keyframes giggle { 0%, 100% { transform: scale(1) rotate(0deg); } 25% { transform: scale(1.1, 0.9) rotate(-10deg); } 50% { transform: scale(0.9, 1.1) rotate(10deg); } }
+.react-surprise { animation: surprise 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important; }
+@keyframes surprise { 0% { transform: translateY(0) scale(1); } 50% { transform: translateY(-80px) scale(1); } 100% { transform: translateY(0) scale(1); } }
+.react-love { animation: pulse-glow 1.2s ease-in-out !important; }
+@keyframes pulse-glow { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.4); } }
+.react-slinky { animation: slinky 0.9s ease-in-out !important; }
+@keyframes slinky { 0%, 100% { transform: scale(1); } 30% { transform: scale(0.7, 1.3); } 60% { transform: scale(1.3, 0.7); } }
+.react-dizzy { animation: dizzy 0.5s linear infinite !important; }
+@keyframes dizzy { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.react-bashful { animation: bashful 0.6s ease-in-out !important; }
+@keyframes bashful { 0%, 100% { transform: translateX(0); } 33% { transform: translateX(-15px); } 66% { transform: translateX(15px); } }
+@keyframes burst-fade { to { transform: translateY(-100px) scale(0); opacity: 0; } }
