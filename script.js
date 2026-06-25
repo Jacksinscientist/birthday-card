@@ -77,8 +77,7 @@ giftBox.addEventListener('click', () => {
 function hideAllAnimals() {
   const animals = document.querySelectorAll('.animal');
   animals.forEach(animal => {
-    animal.style.opacity = '0';
-    animal.style.pointerEvents = 'none';
+    animal.style.display = 'none';
   });
 }
 
@@ -169,20 +168,18 @@ function unlockNextAnimal() {
     const animalEl = animals[unlockedAnimals];
     const animalType = Array.from(animalEl.classList).find(c => Object.keys(animalReactions).includes(c));
     
+    animalEl.style.display = 'block';
     animalEl.style.opacity = '1';
     animalEl.style.pointerEvents = 'auto';
-    animalEl.style.animation = `fade-in 0.6s ease forwards`;
     
     unlockedAnimals++;
   }
 }
 
-// Initialize first animal as unlocked
-unlockNextAnimal();
-
+// Setup click handlers BEFORE unlocking first animal
 animals.forEach(el => {
   el.addEventListener('click', (e) => {
-    if (el.style.pointerEvents === 'none') return;
+    if (el.style.display === 'none' || el.style.opacity === '0') return;
     
     triggerHaptic();
     totalClicks++;
@@ -210,6 +207,11 @@ animals.forEach(el => {
     }
   });
 });
+
+// Initialize first animal as visible on page load
+setTimeout(() => {
+  unlockNextAnimal();
+}, 100);
 
 function triggerFinalSurprise() {
   intenseCelebration = true;
